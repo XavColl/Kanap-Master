@@ -2,11 +2,11 @@ const cartItems = document.getElementById('cart__items')
 let listDifferentProducts = []
 
 
-//get the cookie and transform it into an array of objects
+//get the local storage and transform it into an array of objects
 const getCart = () => {
+    console.log(localStorage)
     const out = []
-    const brut = document.cookie
-    const net = brut.split('=')[1]
+    const net = localStorage.getItem('cart')
     const listItems = net.split('|')
     listItems.forEach((item) => {
         const json = JSON.parse(item)
@@ -16,7 +16,7 @@ const getCart = () => {
 }
 
 
-//cleaning cookie and returning the clean array
+//cleaning cart in local storage and returning the clean array
 const filterCart = (list) => {
     const out = []
     list.forEach((item) => {
@@ -34,7 +34,7 @@ const filterCart = (list) => {
     return out
 }
 
-//afficher le panier
+//display cart
 const displayCart = (list) => {
     list.forEach((item) => {
         fetch('http://localhost:3000/api/products/' + item.id)
@@ -98,11 +98,36 @@ const displayCart = (list) => {
             newArticle.append(newCartItemImg)
             newArticle.append(newCartItemContent)
             cartItems.append(newArticle)
+            setTotalQuantity()
+            setTotalPrice()
         })
         .catch((err) => {
             console.log(err)
         })
     })
+}
+
+
+//display total quantity
+const setTotalQuantity = () => {
+    let total = 0
+    const brut = localStorage.getItem('cart')
+    brut.split('|').forEach((item) => {
+        const itemJson = JSON.parse(item)
+        total += itemJson.quantity
+    })
+    document.getElementById('totalQuantity').textContent = total
+}
+
+//display total price
+const setTotalPrice = () => {
+    let total = 0
+    const brut = localStorage.getItem('cart')
+    brut.split('|').forEach((item) => {
+        const itemJson = JSON.parse(item)
+        total += itemJson.price
+    })
+    document.getElementById('totalPrice').textContent = total
 }
 
 displayCart(filterCart(getCart()))

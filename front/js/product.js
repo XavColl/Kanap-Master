@@ -35,7 +35,7 @@ const displayOneProduct = async () => {
 }
 
 
-//Function triggered by the button, which adds items in cookie
+//Function triggered by the button, which adds items in local storage
 const addToCart = () => {
     const obj = {
         name : document.getElementById('title').textContent,
@@ -44,11 +44,10 @@ const addToCart = () => {
         quantity : parseInt(document.getElementById('quantity').value),
         id
     }
-    let cookie = ''
-    if(document.cookie.length<2){
-        cookie = 'basket=' + JSON.stringify(obj)
-    }else cookie = document.cookie + '|' +JSON.stringify(obj)
-    document.cookie = cookie
+    if(!localStorage.getItem('cart')){
+        localStorage.setItem('cart', JSON.stringify(obj)) 
+    }else localStorage.setItem('cart', localStorage.getItem('cart') + '|' + JSON.stringify(obj))
+    
 }
 
 
