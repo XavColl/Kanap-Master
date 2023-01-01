@@ -10,7 +10,6 @@ const colorsSelect = document.getElementById('color-select');
 
 (function init() {
     displayOneProduct();
-    productsList = getFromLocalStorage();
 
     const buttonSubmit = document.getElementById('addToCart');
     buttonSubmit.addEventListener('click', addToCart);
@@ -49,6 +48,7 @@ function displayOneProduct() {
 // Function triggered by the button, which adds items in local storage
 
 function addToCart() {
+    productsList = getFromLocalStorage();
     if(!colorsSelect.value) return // disabling if the color is not set
     const obj = {
         color : colorsSelect.value,
