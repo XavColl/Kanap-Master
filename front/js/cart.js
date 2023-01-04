@@ -1,4 +1,4 @@
-import { getFromLocalStorage, saveToLocalStorage, clearLocalStorage } from "./localstorage.js";
+import { getFromLocalStorage, saveToLocalStorage } from "./localstorage.js";
 
 const cartItems = document.getElementById('cart__items');
 
@@ -53,26 +53,24 @@ function changeQuantity(e,color,id) {
     localStorage.setItem('cart', JSON.stringify(productsFromCart));
 
     displayTotal();
-    displayQuantity()
+    displayQuantity();
 }
 
 
 // Delete one product from cart according to the id
 
 function deleteFromCart(id, color) {
-    const articles = document.getElementsByClassName('cart__item')
+    const articles = document.getElementsByClassName('cart__item');
     for(const art of articles) {
         if(art.dataset.id === id && art.dataset.color === color){
-            const arr = []
+            const arr = [];
             productsFromCart.forEach(product => {
                 if(product.id !== id || product.color !== color){
-                    arr.push(product)
+                    arr.push(product);
                 }
             })
-            console.log(arr)
-            saveToLocalStorage(arr)
-            console.log(arr)
-            productsFromCart = arr
+            saveToLocalStorage(arr);
+            productsFromCart = arr;
         }
     }
     displayCart()
@@ -112,13 +110,13 @@ function displayTotal() {
 
 function removeCart() {
     while(cartItems.firstChild){
-        cartItems.removeChild(cartItems.firstChild)
+        cartItems.removeChild(cartItems.firstChild);
     }
 }
 
 // Display each product in cart
 function displayCart() {
-    removeCart()
+    removeCart();
     productsFromCart.forEach((item, index) => {
         const productFromAPI = productsFromApi[index];
 
@@ -182,6 +180,106 @@ function displayCart() {
         newDeleteItem.addEventListener('click', () => deleteFromCart(productFromAPI._id, item.color))
     });
 
-
 displayQuantity();
+}
+
+// Checking if form is adequate : 
+
+// Making the messages display : 
+
+document.getElementById('firstName').addEventListener('change', (e) => checkFirstName(e));
+document.getElementById('lastName').addEventListener('change', (e) => checkLastName(e));
+document.getElementById('address').addEventListener('change', (e) => checkAdress(e));
+document.getElementById('city').addEventListener('change', (e) => checkCity(e));
+document.getElementById('email').addEventListener('change', (e) => checkEmail(e));
+
+function checkFirstName(e) {
+    const re = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
+    if(re.test(e.target.value)){
+        document.getElementById('firstNameErrorMsg').textContent = '';
+    }
+    else document.getElementById('firstNameErrorMsg').textContent = 'Prénom au mauvais format';
+}
+
+function checkLastName(e) {
+    const re = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
+    if(re.test(e.target.value)){
+        document.getElementById('lastNameErrorMsg').textContent = '';
+    }
+    else document.getElementById('lastNameErrorMsg').textContent = 'Nom au mauvais format';
+}
+
+function checkAdress(e) {
+    const re = /(\d{1,}) [a-zA-Z0-9\s]+(\.)? [a-zA-Z]/;
+    if(re.test(e.target.value)){
+        document.getElementById('addressErrorMsg').textContent = '';
+    }
+    else document.getElementById('addressErrorMsg').textContent = 'Adresse au mauvais format';
+}
+
+function checkCity(e) {
+    const re = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
+    if(re.test(e.target.value)){
+        document.getElementById('cityErrorMsg').textContent = '';
+    }
+    else document.getElementById('cityErrorMsg').textContent = 'Nom de ville au mauvais format';
+}
+
+function checkEmail(e) {
+    const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    if(re.test(e.target.value)){
+        document.getElementById('emailErrorMsg').textContent = '';
+    }
+    else document.getElementById('emailErrorMsg').textContent = 'Email au mauvais format';
+}
+
+document.getElementById('order').addEventListener('click', (e) => order(e));
+
+function order (e){
+    e.preventDefault()
+    const firstName = document.getElementById('firstName');
+    const lastName = document.getElementById('lastName');
+    const address = document.getElementById('address');
+    const city = document.getElementById('city');
+    const email = document.getElementById('email');
+    const re1 = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
+    const re2 = /(\d{1,}) [a-zA-Z0-9\s]+(\.)? [a-zA-Z]/;
+    const re3 = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    if(
+        re1.test(firstName.value) 
+        && re1.test(lastName.value) 
+        && re1.test(city.value) 
+        && re2.test(address.value) 
+        && re3.test(email.value)
+    ){
+        const products = productsFromCart.map(product => product.id);
+
+        const output = {
+            contact : {
+            firstName,
+            lastName,
+            city,
+            address,
+            email
+            },
+            products
+        }
+
+
+        fetch("http://localhost:3000/api/order", {
+            method: 'POST',
+            headers: { 
+                'Accept': 'application/json', 
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(output)
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+        }).then(value => console.log(value));
+    }
+    else {
+        alert('Vous devez remplir tout le formulaire avant de passer commande')
+    }
 }
