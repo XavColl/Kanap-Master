@@ -48,10 +48,8 @@ function displayQuantity(){
 // Update total price and total quantity
 function changeQuantity(e,color,id) {
     const qt = e.target.value;
-
     productsFromCart.find(product => product.color === color && product.id === id).quantity = qt;
     localStorage.setItem('cart', JSON.stringify(productsFromCart));
-
     displayTotal();
     displayQuantity();
 }
@@ -117,8 +115,9 @@ function removeCart() {
 // Display each product in cart
 function displayCart() {
     removeCart();
-    productsFromCart.forEach((item, index) => {
-        const productFromAPI = productsFromApi[index];
+    document.getElementById('totalPrice').textContent = 0;
+    productsFromCart.forEach((item) => {
+        const productFromAPI = productsFromApi.find(prd => prd._id === item.id);
 
         const newArticle = document.createElement('article');
         const newCartItemImg = document.createElement('div');
@@ -245,6 +244,7 @@ function order (e){
     const re1 = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
     const re2 = /(\d{1,}) [a-zA-Z0-9\s]+(\.)? [a-zA-Z]/;
     const re3 = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    if(productsFromCart.length<=0)  return alert('Votre panier est vide') ;
     if(
         re1.test(firstName.value) 
         && re1.test(lastName.value) 
