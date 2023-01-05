@@ -254,30 +254,32 @@ function order (e){
     ){
         const products = productsFromCart.map(product => product.id);
 
-        const output = {
-            contact : {
+        const contact = {
             firstName,
             lastName,
             city,
             address,
             email
-            },
-            products
+            
         }
 
 
-        fetch("http://localhost:3000/api/order", {
-            method: 'POST',
+        fetch("http://localhost:3000/api/products/order", {
+            method: 'post',
             headers: { 
                 'Accept': 'application/json', 
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(output)
+            body: JSON.stringify({contact,products})
         }).then((res) => {
             if (res.ok) {
                 return res.json();
             }
-        }).then(value => console.log(value));
+        }).then(value => {
+            if(value.orderId !== ''){
+                location.href = 'confirmation.html?id=' + value.orderId;
+            }
+        });
     }
     else {
         alert('Vous devez remplir tout le formulaire avant de passer commande')
