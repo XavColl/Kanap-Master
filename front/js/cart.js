@@ -55,7 +55,11 @@ function changeQuantity(e,color,id) {
 }
 
 
-// Delete one product from cart according to the id
+/**  
+ * Delete one product from cart according to the id
+ * @param {string} id - The id of the product to delete
+ * @param {string} color - The color of the product to delete 
+ */
 
 function deleteFromCart(id, color) {
     const articles = document.getElementsByClassName('cart__item');
@@ -75,7 +79,8 @@ function deleteFromCart(id, color) {
 }
 
 
-// Display total price
+/**  Display total price */
+
 function displayTotal() {
     const totalPrice = document.getElementById('totalPrice');
     let total = 0;
@@ -104,7 +109,7 @@ function displayTotal() {
 }
 
 
-// Removing the whole cart
+/**  Removing the whole cart */
 
 function removeCart() {
     while(cartItems.firstChild){
@@ -112,7 +117,8 @@ function removeCart() {
     }
 }
 
-// Display each product in cart
+/**  Display each product in cart */
+
 function displayCart() {
     removeCart();
     document.getElementById('totalPrice').textContent = 0;
@@ -182,7 +188,6 @@ function displayCart() {
 displayQuantity();
 }
 
-// Checking if form is adequate : 
 
 // Making the messages display : 
 
@@ -192,6 +197,10 @@ document.getElementById('address').addEventListener('change', (e) => checkAdress
 document.getElementById('city').addEventListener('change', (e) => checkCity(e));
 document.getElementById('email').addEventListener('change', (e) => checkEmail(e));
 
+/** Checks the firstName with Regex 
+ * @param {Event} e - the event of the document.
+*/
+
 function checkFirstName(e) {
     const re = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
     if(re.test(e.target.value)){
@@ -199,6 +208,10 @@ function checkFirstName(e) {
     }
     else document.getElementById('firstNameErrorMsg').textContent = 'Prénom au mauvais format';
 }
+
+/** Checks the last name with Regex 
+ * @param {Event} e - the event of the document.
+*/
 
 function checkLastName(e) {
     const re = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
@@ -208,6 +221,10 @@ function checkLastName(e) {
     else document.getElementById('lastNameErrorMsg').textContent = 'Nom au mauvais format';
 }
 
+/** Checks the adress with Regex 
+ * @param {Event} e - the event of the document.
+*/
+
 function checkAdress(e) {
     const re = /(\d{1,}) [a-zA-Z0-9\s]+(\.)? [a-zA-Z]/;
     if(re.test(e.target.value)){
@@ -216,6 +233,10 @@ function checkAdress(e) {
     else document.getElementById('addressErrorMsg').textContent = 'Adresse au mauvais format';
 }
 
+/** Checks the city with Regex 
+ * @param {Event} e - the event of the document.
+*/
+
 function checkCity(e) {
     const re = /^[A-Z][A-Za-z\é\è\ê\ä\ë\-]+$/;
     if(re.test(e.target.value)){
@@ -223,6 +244,10 @@ function checkCity(e) {
     }
     else document.getElementById('cityErrorMsg').textContent = 'Nom de ville au mauvais format';
 }
+
+/** Checks the email with Regex 
+ * @param {Event} e - the event of the document.
+*/
 
 function checkEmail(e) {
     const re = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -233,6 +258,10 @@ function checkEmail(e) {
 }
 
 document.getElementById('order').addEventListener('click', (e) => order(e));
+
+/** Orders the content of the cart
+ * @param {Event} e - the event of the document.
+ */
 
 function order (e){
     e.preventDefault()

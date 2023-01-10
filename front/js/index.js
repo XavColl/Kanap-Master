@@ -2,7 +2,9 @@
 
 const domItems = document.getElementById('items');
 
-// fetching all the products to sell and displaying them
+/** 
+ * Fetching all the products to sell and displaying them 
+ */
 ( function displayAllProducts() {
     fetch('http://localhost:3000/api/products/').then((res) => {
         if (res.ok) {

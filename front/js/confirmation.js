@@ -4,7 +4,7 @@ const id = url.searchParams.get("id");
 
 initPage()
 
-// Displaying the order id in the page.
+/**  Displaying the order id in the page. */
 
 function initPage (){
     document.getElementById('orderId').textContent = id;
