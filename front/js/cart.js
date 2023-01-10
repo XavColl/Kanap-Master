@@ -1,4 +1,4 @@
-import { getFromLocalStorage, saveToLocalStorage } from "./localstorage.js";
+import { getFromLocalStorage, saveToLocalStorage, clearLocalStorage } from "./localstorage.js";
 
 const cartItems = document.getElementById('cart__items');
 
