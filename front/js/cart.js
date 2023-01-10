@@ -307,6 +307,7 @@ function order (e){
         }).then(value => {
             if(value.orderId !== ''){
                 location.href = 'confirmation.html?id=' + value.orderId;
+                clearLocalStorage()
             }
         });
     }
