@@ -48,7 +48,7 @@ function displayQuantity(){
 // Update total price and total quantity
 function changeQuantity(e,color,id) {
     const qt = e.target.value;
-    productsFromCart.find(product => product.color === color && product.id === id).quantity = qt;
+    productsFromCart.find(product => product.color === color && product.id === id).quantity = parseInt(qt);
     localStorage.setItem('cart', JSON.stringify(productsFromCart));
     displayTotal();
     displayQuantity();
