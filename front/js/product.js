@@ -7,13 +7,13 @@ let productsList = [];
 
 const quantity = document.getElementById('quantity');
 const colorsSelect = document.getElementById('color-select');
+const buttonSubmit = document.getElementById('addToCart');
 
 /** Initiates the document */
 
 (function init() {
     displayOneProduct();
-
-    const buttonSubmit = document.getElementById('addToCart');
+    colorsSelect.addEventListener('change', () => isButtonAble(buttonSubmit))
     buttonSubmit.addEventListener('click', addToCart);
 })();
 
@@ -42,6 +42,7 @@ function displayOneProduct() {
         document.getElementById('title').textContent = value.name;
         document.getElementById('price').textContent = value.price;
         document.getElementById('description').textContent = value.description;
+        isButtonAble(buttonSubmit)
     })
     .catch((err) => {
         console.log(err);
@@ -69,4 +70,14 @@ function addToCart() {
         productsList.push(obj);
     }
     localStorage.setItem('cart', JSON.stringify(productsList));
+}
+
+/** Function that enables the button only if a color is selected 
+ * @param {object} btn
+*/
+
+function isButtonAble(btn) {
+    console.log(btn)
+    if(!colorsSelect.value) btn.disabled = true;
+    else btn.disabled = false;
 }
